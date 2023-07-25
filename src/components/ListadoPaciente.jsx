@@ -14,11 +14,11 @@ const ListadoPaciente = ({ pacientes, setPaciente, eliminarPaciente }) => {
             <span className="text-indigo-700 font-bold">Pacientes y citas</span>
           </p>
           {pacientes.map((paciente) => (
-            <Paciente 
-            key={paciente.id} 
-            paciente={paciente}
-            setPaciente={setPaciente}
-            eliminarPaciente={eliminarPaciente}
+            <Paciente
+              key={paciente.id}
+              paciente={paciente}
+              setPaciente={setPaciente}
+              eliminarPaciente={eliminarPaciente}
             />
           ))}
         </>
@@ -27,7 +27,9 @@ const ListadoPaciente = ({ pacientes, setPaciente, eliminarPaciente }) => {
           <h2 className="font-black text-3xl text-center">No hay Paciente</h2>
           <p className="text-xl mt-5 mb-10 text-center">
             Comienza agregando tus pacientes {""}
-            <span className="text-indigo-700 font-bold">y se mostrarán acá.</span>
+            <span className="text-indigo-700 font-bold">
+              y se mostrarán acá.
+            </span>
           </p>
         </>
       )}
