@@ -20,7 +20,6 @@ const Formulario = ({ pacientes, setPacientes, paciente, setPaciente }) => {
       setFecha(paciente.fecha);
       setSintomas(paciente.sintomas);
     }
-
   }, [paciente]);
 
   const generarId = () => {
@@ -30,6 +29,15 @@ const Formulario = ({ pacientes, setPacientes, paciente, setPaciente }) => {
     return random + fecha;
   };
 
+  const clarData = () => {
+    // Reiniciar el formulario
+    setNombre("");
+    setPropietario("");
+    setEmail("");
+    setFecha("");
+    setSintomas("");
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
 
@@ -37,7 +45,7 @@ const Formulario = ({ pacientes, setPacientes, paciente, setPaciente }) => {
     if ([nombre, propietario, email, fecha, sintomas].includes("")) {
       console.log("Debes de llenar todos los campos requeridos");
       setError(true);
-      return;
+      clarData;
     }
 
     setError(false);
@@ -48,29 +56,35 @@ const Formulario = ({ pacientes, setPacientes, paciente, setPaciente }) => {
       propietario,
       email,
       fecha,
-      sintomas
-    }
+      sintomas,
+    };
 
     if (paciente.id) {
-      // Editando el Registro
-      objtPaciente.id = paciente.id;
-      const pacientesActualizados = pacientes.map(pacienteState =>pacienteState.id === paciente.id ? objtPaciente : pacienteState)
+      const respuestaEditar = confirm("¿Desea editar este paciente?");
 
-      setPacientes(pacientesActualizados);
-      setPaciente({});
+      if (respuestaEditar) {
+        // Editando el Registro
+        objtPaciente.id = paciente.id;
+        const pacientesActualizados = pacientes.map((pacienteState) =>
+          pacienteState.id === paciente.id ? objtPaciente : pacienteState
+        );
+
+        setPacientes(pacientesActualizados);
+        setPaciente({});
+        alert("El paciente se edito correctamente");
+        clarData();
+      }
     } else {
-      // Nuevo Registro
-      objtPaciente.id = generarId();
-      setPacientes([...pacientes, objtPaciente]);
+      const respuestaAgregar = confirm("¿Desea agregar este paciente?");
+
+      if (respuestaAgregar) {
+        // Nuevo Registro
+        objtPaciente.id = generarId();
+        setPacientes([...pacientes, objtPaciente]);
+        alert("El paciente se agrego correctamente");
+         clarData();
+      }
     }
-
-
-    // Reiniciar el formulario
-    setNombre("");
-    setPropietario("");
-    setEmail("");
-    setFecha("");
-    setSintomas("");
   };
 
   return (
