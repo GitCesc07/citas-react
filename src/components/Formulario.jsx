@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import Swal from "sweetalert2";
 import Error from "./Error";
 
 const Formulario = ({ pacientes, setPacientes, paciente, setPaciente }) => {
@@ -60,30 +61,77 @@ const Formulario = ({ pacientes, setPacientes, paciente, setPaciente }) => {
     };
 
     if (paciente.id) {
-      const respuestaEditar = confirm("¿Desea editar este paciente?");
+      Swal.fire({
+        title: "Advertencia",
+        text: "¿Estas seguro que deseas modificar el registro?",
+        icon: "error",
+        showDenyButton: true,
+        denyButtonText: "No, modificar",
+        confirmButtonText: "Si, modificar",
+        confirmButtonColor: "#000000",
+      }).then((response) => {
+        if (response.isConfirmed) {
+          Swal.fire(
+            "Correcto",
+            "El registro se edito correctamente",
+            "success"
+          );
+          objtPaciente.id = paciente.id;
+          const pacientesActualizados = pacientes.map((pacienteState) =>
+            pacienteState.id === paciente.id ? objtPaciente : pacienteState
+          );
 
-      if (respuestaEditar) {
-        // Editando el Registro
-        objtPaciente.id = paciente.id;
-        const pacientesActualizados = pacientes.map((pacienteState) =>
-          pacienteState.id === paciente.id ? objtPaciente : pacienteState
-        );
+          setPacientes(pacientesActualizados);
+          setPaciente({});
+          clarData();
+          return;
+        }
+      });
 
-        setPacientes(pacientesActualizados);
-        setPaciente({});
-        alert("El paciente se edito correctamente");
-        clarData();
-      }
+      // const respuestaEditar = confirm("¿Desea editar este paciente?");
+
+      // if (respuestaEditar) {
+      //   // Editando el Registro
+      //   objtPaciente.id = paciente.id;
+      //   const pacientesActualizados = pacientes.map((pacienteState) =>
+      //     pacienteState.id === paciente.id ? objtPaciente : pacienteState
+      //   );
+
+      //   setPacientes(pacientesActualizados);
+      //   setPaciente({});
+      //   alert("El paciente se edito correctamente");
+      //   clarData();
+      // }
     } else {
-      const respuestaAgregar = confirm("¿Desea agregar este paciente?");
+      Swal.fire({
+        title: "Advertencia",
+        text: "¿Estas seguro que deseas agregar el registro?",
+        icon: "error",
+        showDenyButton: true,
+        denyButtonText: "No, agregar",
+        confirmButtonText: "Si, agregar",
+        confirmButtonColor: "#000000",
+      }).then((response) => {
+        if (response.isConfirmed) {
+          Swal.fire(
+            "Correcto",
+            "El registro se agrego correctamente",
+            "success"
+          );
+          objtPaciente.id = generarId();
+          setPacientes([...pacientes, objtPaciente]);
+          clarData();
+        }
+      });
+      // const respuestaAgregar = confirm("¿Desea agregar este paciente?");
 
-      if (respuestaAgregar) {
-        // Nuevo Registro
-        objtPaciente.id = generarId();
-        setPacientes([...pacientes, objtPaciente]);
-        alert("El paciente se agrego correctamente");
-         clarData();
-      }
+      // if (respuestaAgregar) {
+      //   // Nuevo Registro
+      //   objtPaciente.id = generarId();
+      //   setPacientes([...pacientes, objtPaciente]);
+      //   alert("El paciente se agrego correctamente");
+      //   clarData();
+      // }
     }
   };
 

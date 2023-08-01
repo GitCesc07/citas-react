@@ -1,16 +1,32 @@
-
+import Swal from "sweetalert2";
 
 const Paciente = ({paciente, setPaciente, eliminarPaciente}) => {
 
   const {nombre, propietario, email, fecha, sintomas, id} = paciente;
 
   const handleEliminar = () => {
-    const respuesta = confirm("Desea eliminar este paciente");
 
-    if(respuesta) {
-      eliminarPaciente(id);
-      alert("El paciente se elimino correctamente");
-    }
+    Swal.fire({
+      title: "Advertencia",
+      text: "¿Estas seguro que deseas eliminar el registro?",
+      icon: "error",
+      showDenyButton: true,
+      denyButtonText: "No, elminar",
+      confirmButtonText: "Si, eliminar",
+      confirmButtonColor: "#000000",
+    }).then(response => {
+      if(response.isConfirmed) {
+        Swal.fire("Correcto", "El registro se elimino correctamente", "success");
+        eliminarPaciente(id);
+        return;
+      }
+    })
+    // const respuesta = confirm("Desea eliminar este paciente");
+
+    // if(respuesta) {
+    //   eliminarPaciente(id);
+    //   alert("El paciente se elimino correctamente");
+    // }
   }
 
   return (
